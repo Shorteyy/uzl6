@@ -73,8 +73,20 @@ view: inventory_items {
   }
 
   dimension: product_retail_price {
+    hidden: yes
     type: number
     sql: ${TABLE}.product_retail_price ;;
+  }
+
+  measure: sum_retail_price {
+    label: "Totaal retail price"
+    type: sum
+    sql: ${product_retail_price} ;;
+    value_format_name: eur
+  }
+  measure: avg_retail_price {
+    type: average
+    sql: ${product_retail_price} ;;
   }
 
   dimension: product_sku {

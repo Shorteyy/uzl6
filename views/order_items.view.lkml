@@ -92,19 +92,47 @@ view: order_items {
     drill_fields: [detail*]
   }
 
+  parameter: aggregation_method {
+    type: unquoted
+    allowed_value: {
+      value: "sum"
+      label: "Sum"
+    }
+    allowed_value: {
+      value: "max"
+      label: "Max"
+    }
+    allowed_value: {
+      value: "average"
+      label: "Average"
+    }
+    default_value: "sum"
+  }
+
+  measure: dynamic_aggregation {
+    type: number
+    sql: {% parameter aggregation_method%}(${sale_price}) ;;
+    # sql: CASE
+    #     WHEN {% parameter aggregation_method %} = 'sum' THEN SUM(${sale_price})
+    #     WHEN {% parameter aggregation_method %} = 'max' THEN MAX(${sale_price})
+    #     WHEN {% parameter aggregation_method %} = 'average' THEN AVG(${sale_price})
+    #   END ;;
+  }
+
+
   # ----- Sets of fields for drilling ------
   set: detail {
     fields: [
-	id,
-	users.last_name,
-	users.id,
-	users.first_name,
-	inventory_items.id,
-	inventory_items.product_name,
-	products.name,
-	products.id,
-	orders.order_id
-	]
+  id,
+  users.last_name,
+  users.id,
+  users.first_name,
+  inventory_items.id,
+  inventory_items.product_name,
+  products.name,
+  products.id,
+  orders.order_id
+  ]
   }
 
 }
